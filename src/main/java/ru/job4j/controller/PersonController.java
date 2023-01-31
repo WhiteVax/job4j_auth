@@ -40,16 +40,16 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Person person) {
-        persons.save(person);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HttpStatus> update(@RequestBody Person person) {
+        return new ResponseEntity<>(
+                persons.update(person) ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
-        var person = new Person();
-        person.setId(id);
-        persons.delete(person);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<HttpStatus> delete(@PathVariable int id) {
+        return new ResponseEntity<>(
+                persons.delete(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 }

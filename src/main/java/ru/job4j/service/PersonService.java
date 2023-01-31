@@ -26,7 +26,18 @@ public class PersonService {
         return persons.save(person);
     }
 
-    public void delete(Person person) {
-        persons.delete(person);
+    public boolean delete(int id) {
+        var findThisPerson = persons.findById(id);
+        findThisPerson.ifPresent(persons::delete);
+        return findThisPerson.isPresent();
+    }
+
+    public boolean update(Person person) {
+        var findThisPerson = persons.findById(person.getId());
+        if (findThisPerson.isPresent()) {
+            persons.save(person);
+            return true;
+        }
+        return false;
     }
 }
