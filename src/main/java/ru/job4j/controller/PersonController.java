@@ -9,7 +9,7 @@ import ru.job4j.service.PersonService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/persons")
 public class PersonController {
     private final PersonService persons;
 
