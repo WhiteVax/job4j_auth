@@ -11,6 +11,7 @@ import ru.job4j.domain.Person;
 import ru.job4j.repository.PersonRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
@@ -41,17 +42,16 @@ public class PersonService implements UserDetailsService {
         persons.delete(person);
     }
 
-    public boolean update(Person person) {
+    public void update(Person person) {
         if (person.getLogin() == null || person.getPassword() == null) {
             throw new NullPointerException();
         }
         var findThisPerson = persons.findById(person.getId());
-        if (findThisPerson.isPresent()) {
-            person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
-            persons.save(person);
-            return true;
+        if (findThisPerson.isEmpty()) {
+            throw new NoSuchElementException();
         }
-        return false;
+        person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
+        persons.save(person);
     }
 
     @Override

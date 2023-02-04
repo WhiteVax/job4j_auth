@@ -1,14 +1,18 @@
 package ru.job4j.controller;
 
 import lombok.SneakyThrows;
+import org.hibernate.type.TextType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
 import ru.job4j.service.PersonService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
@@ -43,10 +47,16 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<HttpStatus> update(@RequestBody Person person) {
-        return new ResponseEntity<>(
-                persons.update(person) ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+    public ResponseEntity<String> update(@RequestBody Person person) {
+        persons.update(person);
+        var body = new HashMap<>() {{
+            put("person", String.format("Person with id = %s successfully updated.", person.getId()));
+        }}.toString();
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("job4j_auth", "update")
+                .contentType(MediaType.TEXT_PLAIN)
+                .contentLength(body.length())
+                .body(body);
     }
 
     @DeleteMapping("/{id}")

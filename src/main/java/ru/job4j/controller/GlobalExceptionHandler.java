@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -41,6 +42,17 @@ public class GlobalExceptionHandler {
         resp.setContentType("application/json");
         resp.getWriter().write(objectMapper.writeValueAsString(new HashMap<>() { {
             put("message", "This login is already exists!");
+            put("details", e.getMessage());
+        }}));
+        LOGGER.error(e.getMessage());
+    }
+
+    @ExceptionHandler(value = {NoSuchElementException.class})
+    public void handlerExceptionNoSuchElement(Exception e, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(HttpStatus.NOT_FOUND.value());
+        resp.setContentType("application/json");
+        resp.getWriter().write(objectMapper.writeValueAsString(new HashMap<>() { {
+            put("message", "Not found this person.");
             put("details", e.getMessage());
         }}));
         LOGGER.error(e.getMessage());
