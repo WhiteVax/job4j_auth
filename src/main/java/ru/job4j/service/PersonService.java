@@ -30,17 +30,21 @@ public class PersonService implements UserDetailsService {
     }
 
     public Person save(Person person) {
+        if (person.getLogin() == null || person.getPassword() == null) {
+            throw new NullPointerException();
+        }
         person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
         return persons.save(person);
     }
 
-    public boolean delete(int id) {
-        var findThisPerson = persons.findById(id);
-        findThisPerson.ifPresent(persons::delete);
-        return findThisPerson.isPresent();
+    public void delete(Person person) {
+        persons.delete(person);
     }
 
     public boolean update(Person person) {
+        if (person.getLogin() == null || person.getPassword() == null) {
+            throw new NullPointerException();
+        }
         var findThisPerson = persons.findById(person.getId());
         if (findThisPerson.isPresent()) {
             person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));

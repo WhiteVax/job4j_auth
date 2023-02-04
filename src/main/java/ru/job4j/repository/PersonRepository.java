@@ -6,6 +6,7 @@ import ru.job4j.domain.Person;
 import java.util.List;
 
 public interface PersonRepository extends CrudRepository<Person, Integer> {
+
     List<Person> findAll();
-    Person findByLogin(String username);
+    Person findByLogin(String login);
 }

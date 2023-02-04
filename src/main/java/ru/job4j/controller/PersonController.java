@@ -1,8 +1,10 @@
 package ru.job4j.controller;
 
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
 import ru.job4j.service.PersonService;
 
@@ -31,7 +33,8 @@ public class PersonController {
         );
     }
 
-    @PostMapping("/")
+    @SneakyThrows
+    @PostMapping("/sign-up")
     public ResponseEntity<Person> create(@RequestBody Person person) {
         return new ResponseEntity<>(
                 persons.save(person),
@@ -48,8 +51,14 @@ public class PersonController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable int id) {
+        var person = persons.findById(id).orElseThrow(
+                () -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "This person is not found."
+                )
+        );
+        persons.delete(person);
         return new ResponseEntity<>(
-                persons.delete(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND
+                HttpStatus.OK
         );
     }
 }
