@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
+import ru.job4j.domain.PersonDTO;
 import ru.job4j.service.PersonService;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class PersonController {
 
     @SneakyThrows
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> create(@RequestBody Person person) {
+    public ResponseEntity<Person> create(@RequestBody PersonDTO person) {
         return new ResponseEntity<>(
                 persons.save(person),
                 HttpStatus.CREATED
@@ -67,6 +68,14 @@ public class PersonController {
                 )
         );
         persons.delete(person);
+        return new ResponseEntity<>(
+                HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/")
+    public ResponseEntity<HttpStatus> update(@RequestBody PersonDTO personDTO) {
+        persons.update(personDTO);
         return new ResponseEntity<>(
                 HttpStatus.OK
         );

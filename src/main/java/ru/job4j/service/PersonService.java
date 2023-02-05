@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.job4j.domain.Person;
+import ru.job4j.domain.PersonDTO;
 import ru.job4j.repository.PersonRepository;
 
 import java.util.List;
@@ -30,12 +31,14 @@ public class PersonService implements UserDetailsService {
         return persons.findById(id);
     }
 
-    public Person save(Person person) {
-        if (person.getLogin() == null || person.getPassword() == null) {
+    public Person save(PersonDTO personDTO) {
+        if (personDTO.getLogin() == null || personDTO.getPassword() == null) {
             throw new NullPointerException();
         }
-        person.setPassword(bCryptPasswordEncoder.encode(person.getPassword()));
-        return persons.save(person);
+        var person = new Person();
+        person.setLogin(personDTO.getLogin());
+        person.setPassword(bCryptPasswordEncoder.encode(personDTO.getPassword()));
+        return persons.save(new Person(0, person.getLogin(), person.getPassword()));
     }
 
     public void delete(Person person) {
@@ -61,5 +64,14 @@ public class PersonService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         return new User(user.getLogin(), user.getPassword(), emptyList());
+    }
+
+    public void update(PersonDTO personDTO) {
+        var person = persons.findByLogin(personDTO.getLogin());
+        if (person == null) {
+            throw new NoSuchElementException();
+        }
+        person.setPassword(bCryptPasswordEncoder.encode(personDTO.getPassword()));
+        persons.save(person);
     }
 }
