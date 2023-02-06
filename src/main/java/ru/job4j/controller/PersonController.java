@@ -11,6 +11,7 @@ import ru.job4j.domain.Person;
 import ru.job4j.domain.PersonDTO;
 import ru.job4j.service.PersonService;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class PersonController {
 
     @SneakyThrows
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> create(@RequestBody PersonDTO person) {
+    public ResponseEntity<Person> create(@Valid @RequestBody PersonDTO person) {
         return new ResponseEntity<>(
                 persons.save(person),
                 HttpStatus.CREATED
@@ -48,7 +49,7 @@ public class PersonController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<String> update(@RequestBody Person person) {
+    public ResponseEntity<String> update(@Valid @RequestBody Person person) {
         persons.update(person);
         var body = new HashMap<>() {{
             put("person", String.format("Person with id = %s successfully updated.", person.getId()));
@@ -74,7 +75,7 @@ public class PersonController {
     }
 
     @PatchMapping("/")
-    public ResponseEntity<HttpStatus> update(@RequestBody PersonDTO personDTO) {
+    public ResponseEntity<HttpStatus> update(@Valid @RequestBody PersonDTO personDTO) {
         persons.update(personDTO);
         return new ResponseEntity<>(
                 HttpStatus.OK

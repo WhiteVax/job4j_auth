@@ -32,9 +32,6 @@ public class PersonService implements UserDetailsService {
     }
 
     public Person save(PersonDTO personDTO) {
-        if (personDTO.getLogin() == null || personDTO.getPassword() == null) {
-            throw new NullPointerException();
-        }
         var person = new Person();
         person.setLogin(personDTO.getLogin());
         person.setPassword(bCryptPasswordEncoder.encode(personDTO.getPassword()));
@@ -46,9 +43,6 @@ public class PersonService implements UserDetailsService {
     }
 
     public void update(Person person) {
-        if (person.getLogin() == null || person.getPassword() == null) {
-            throw new NullPointerException();
-        }
         var findThisPerson = persons.findById(person.getId());
         if (findThisPerson.isEmpty()) {
             throw new NoSuchElementException();
