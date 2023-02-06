@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 public class PersonDTO {
     @NotNull(message = "Login must be not null.")
-    @Size(min = 5, max = 30, message = "Login is too short or too long.")
+    @Size(min = 3, max = 30, message = "Login is too short or too long.")
     private String login;
     @NotNull(message = "Password must be not null.")
     @Size(min = 5, max = 60, message = "Password must be between 8 and 60 characters.")
