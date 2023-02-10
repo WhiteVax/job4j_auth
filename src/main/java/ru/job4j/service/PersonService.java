@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.job4j.domain.Person;
-import ru.job4j.domain.PersonDTO;
+import ru.job4j.dto.PersonDTO;
 import ru.job4j.repository.PersonRepository;
 
 import java.util.List;

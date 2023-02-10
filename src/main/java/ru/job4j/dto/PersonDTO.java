@@ -1,4 +1,4 @@
-package ru.job4j.domain;
+package ru.job4j.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

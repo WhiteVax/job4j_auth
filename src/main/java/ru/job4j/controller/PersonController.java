@@ -1,20 +1,18 @@
 package ru.job4j.controller;
 
 import lombok.SneakyThrows;
-import org.hibernate.type.TextType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
-import ru.job4j.domain.PersonDTO;
+import ru.job4j.dto.PersonDTO;
 import ru.job4j.service.PersonService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
